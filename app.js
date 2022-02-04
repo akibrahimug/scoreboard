@@ -1,35 +1,10 @@
-const players = [
-    {
-        name: "Ibrahim",
-        id: 1
-    },
-    {
-        name: "Cess",
-        id: 2
-    },
-    {
-        name: "Ezra",
-        id: 3
-    },
-    {
-        name: "Yudaya",
-        id: 4
-    },
-    {
-        name: "Rose",
-        id: 5
-    },
-    {
-        name: "Mbeche",
-        id: 6
-    },
-    
-]
+
 
 const Player = (props) => { 
     return (
         <div className="player">
-            <span className="player-name">{props.name}</span>
+            <span className="player-name">{props.name}
+            <button className="remove-player" onClick={ () => {props.removePlayer(props.id)}}>✖</button></span>
             <Counter />
         </div>
     )
@@ -71,21 +46,63 @@ const Header = (props) => {
     )
 }
 
-const App = (props) => {
-    return (
-        <div className="scoreboard">
-            <Header totalPlayers={props.intialPlayers.length}/>
-            {/* Players List */}
-            {props.intialPlayers.map(player => {
-                return (
-                    <Player name={player.name} key={player.id}/>
-                )
-            })}
-        </div>
-    )
+class App extends React.Component {
+    state = {
+        players: [
+            {
+                name: "Ibrahim",
+                id: 1
+            },
+            {
+                name: "Cess",
+                id: 2
+            },
+            {
+                name: "Ezra",
+                id: 3
+            },
+            {
+                name: "Yudaya",
+                id: 4
+            },
+            {
+                name: "Rose",
+                id: 5
+            },
+            {
+                name: "Mbeche",
+                id: 6
+            },
+        ]
+    }
+    handleRemove = (id) => {
+        this.setState( prevState => {
+            return {
+            players: prevState.players.filter(p => p.id !== id)
+            }
+        })
+    }
+    render(){
+        return (
+            <div className="scoreboard">
+                <Header totalPlayers={this.state.players.length}/>
+                {/* Players List */}
+                {this.state.players.map(player => {
+                    return (
+                        <Player 
+                        name={player.name} 
+                        key={player.id.toString()}
+                        id={player.id}
+                        removePlayer={this.handleRemove}
+                        />
+                    )
+                })}
+            </div>
+        )
+    }
 }
 
 ReactDOM.render(
-    <App intialPlayers={players}/>,
+    <App />,
     document.getElementById('root')
 )
