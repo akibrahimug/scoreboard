@@ -39,11 +39,33 @@ class App extends Component {
           },
       ]
   }
+
+  playerId = 6
+
+  addPlayer = (name) => {
+      this.setState({
+          players: [
+              ...this.state.players,
+              {
+                  name,
+                  score: 0,
+                  id: this.playerId + 1
+              }
+          ]
+      })
+  }
      
   handleChangeScore = (index, delta) => {
-    this.setState(prevState => ({
-        score: prevState.players[index].score += delta
-    }))
+    this.setState(prevState => {
+      const updatedPlayers = [...prevState.players];
+      const updatedPlayer = {...updatedPlayers[index]};
+      updatedPlayer.score += delta;
+      updatedPlayers[index] = updatedPlayer
+      
+      return {
+        players: updatedPlayers
+      }
+    })
  
 }
 
@@ -72,7 +94,7 @@ class App extends Component {
                       />
                   )
               })}
-              <AddPlayerForm />
+              <AddPlayerForm addPlayer={this.addPlayer}/>
           </div>
       )
   }
